@@ -1,0 +1,70 @@
+server:
+  port: 57010
+  max-http-header-size: 100KB
+
+
+nacos:
+  server:
+    addr: 101.200.133.224:8848
+
+spring:
+  application:
+    name: merchant-application
+   #spring Could 允许单个服务消费者被多次服务 allow-bean-definition-overriding: true
+      #spring Could 原则上微服务 分得越细越好
+      #但是有时候，我们没办法，因为穷。分不了那么多
+      #所以就把多个服务 写一起了
+      #这个时候 消费者那里被重复服务。
+      #默认是不允许的
+  main:
+    allow-bean-definition-overriding: true # spring boot 2.1 需要设定
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${nacos.server.addr}
+        namespace: bce6d24b-906d-4d1e-9159-a58118ffa18b
+        cluster-name: DEFAULT
+      config:
+        file-extension: yaml
+        server-addr: ${nacos.server.addr} #配置中心地址
+        namespace: bce6d24b-906d-4d1e-9159-a58118ffa18b
+        group: SHANJUPAY_GROUP
+        ext-config:
+          -
+            refresh: true
+            data-id: spring-boot-http.yaml  # springboot http 配置
+            group: COMMON_GROUP   # 通用组
+
+
+ # spring mvc 上传文件配置
+  servlet:
+    multipart:
+      enabled: true # 默认支持上传文件
+      file-size-threshold: 0 #支持文件写入磁盘
+      location:     # 上传文件的临时目录
+      max-file-size: 1MB   #最大支持文件大小
+      max-request-size: 30MB #最大支持请求大小
+
+
+
+
+dubbo:
+  scan:
+    base-packages: com.shanjupay #dubbo 服务扫描基准包
+  protocol:
+    name: dubbo #dubbo 协议
+    port: 20891
+  registry:
+    address: nacos://101.200.133.224:8848
+  application:
+    qos-port: 22310  # dubbo qos端口配置 命令行注入
+  consumer:
+    check: false
+    timeout: 3000
+    retries: -1
+
+# 使用log42作为日志配置文件
+logging:
+  config: classpath:log4j2.xml
+

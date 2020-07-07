@@ -1,0 +1,62 @@
+server:
+  port: 56040
+
+nacos:
+  server:
+    addr: 101.200.133.224
+
+spring:
+  application:
+    name: merchant-service
+
+  main:
+    allow-bean-definition-overriding: true # springboot 2.1 需要设定
+
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${nacos.server.addr}
+        namespace: bce6d24b-906d-4d1e-9159-a58118ffa18b
+        cluster-name: DEFAULT
+
+      config:
+        file-extension: yaml
+        server-addr: ${nacos.server.addr}
+        namespace: bce6d24b-906d-4d1e-9159-a58118ffa18b
+        group: SHANJUPAY_GROUP
+        ext-config:
+          -
+            refresh: true
+            data-id: spring-boot-http.yaml
+            group: COMMON_GROUP
+          -
+            refresh: true
+            data-id: spring-boot-mybatis-plus.yaml
+            group: COMMON_GROUP
+          -
+            refresh: true
+            data-id: spring-boot-starter-druid.yaml
+            group: COMMON_GROUP
+
+
+dubbo:
+  scan:
+    base-packages: com.shanjupay
+  consumer:
+    check: false
+    timeout: 9000
+    retries: -1
+  protocol:
+    port: 20890
+    name: dubbo
+  registry:
+    address: nacos://101.200.133.224:8848
+  application:
+    qos-port: 22240
+
+
+
+logging:
+  config: classpath:log4j2.xml
+
