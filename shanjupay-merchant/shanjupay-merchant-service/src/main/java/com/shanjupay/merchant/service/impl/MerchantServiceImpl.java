@@ -1,7 +1,8 @@
 package com.shanjupay.merchant.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.oracle.tools.packager.Log;
+import com.shanjupay.common.domain.BussinessException;
+import com.shanjupay.common.domain.CommonErrorCode;
 import com.shanjupay.merchant.api.MerchantService;
 import com.shanjupay.merchant.api.dto.MerchantDTO;
 import com.shanjupay.merchant.convert.MerchantConvert;
@@ -50,5 +51,27 @@ public class MerchantServiceImpl implements MerchantService {
         MerchantDTO merchantDTONew = MerchantConvert.INSTANCE.entity2dto(merchant);
         log.info("商户注册,返回结果={}", JSON.toJSONString(merchantDTONew));
         return merchantDTONew;
+    }
+
+
+    /**
+     * 商户资质申请
+     * @param merchantDTO
+     */
+    @Override
+    public void applyMerchant(MerchantDTO merchantDTO) {
+        if(merchantDTO == null || merchantDTO.getId() == null){
+            throw new BussinessException(CommonErrorCode.E_100108);
+        }
+
+        Merchant merchant1 = merchantMapper.selectById(merchantDTO.getId());
+        if(merchant1 == null){
+            throw new BussinessException(CommonErrorCode.E_200207);
+        }
+
+        Merchant merchant = MerchantConvert.INSTANCE.dto2entity(merchantDTO);
+        merchant.setAuditStatus("1");
+        merchant.setTenantId(merchant1.getTenantId());
+        int i = merchantMapper.updateById(merchant);
     }
 }

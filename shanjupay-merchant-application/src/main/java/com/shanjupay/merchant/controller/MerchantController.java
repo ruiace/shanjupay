@@ -1,9 +1,15 @@
 package com.shanjupay.merchant.controller;
 
+import com.shanjupay.common.domain.BussinessException;
+import com.shanjupay.common.domain.CommonErrorCode;
 import com.shanjupay.common.valid.ValidUtils;
 import com.shanjupay.merchant.api.MerchantService;
 import com.shanjupay.merchant.api.dto.MerchantDTO;
+import com.shanjupay.merchant.common.util.SecurityUtil;
+import com.shanjupay.merchant.convert.MerchantDetailConvert;
+import com.shanjupay.merchant.service.FileService;
 import com.shanjupay.merchant.service.SmsService;
+import com.shanjupay.merchant.vo.MerchantDetailVO;
 import com.shanjupay.merchant.vo.MerchantRegisterVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -13,8 +19,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.NotNull;
+import java.io.IOException;
+import java.util.UUID;
 
 /**
  * @author Administrator
@@ -29,6 +37,12 @@ public class MerchantController {
 
     @Autowired
     private SmsService smsService;
+
+    @Autowired
+    private FileService FileService;
+
+
+
 
     @ApiOperation("测试")
     @GetMapping(path = "/hello")
@@ -76,9 +90,37 @@ public class MerchantController {
 
 
 
+    @ApiOperation("证件上传")
+    @ApiImplicitParam(name = "file",value = "上传文件",required = true)
+    @PostMapping("/upload")
+    public String upload(@RequestParam("file") MultipartFile file){
+        //原始文件名称
+        String originalFilename = file.getOriginalFilename();
+        //文件后轴
+        String suffix = originalFilename.substring(originalFilename.lastIndexOf(".") - 1);
+        //文件名称
+        String fileName = UUID.randomUUID().toString() + suffix;
+
+        String uploadName = null;
+        try {
+            uploadName = FileService.upload(file.getBytes(), fileName);
+        } catch (IOException e) {
+            throw new BussinessException(CommonErrorCode.E_100106);
+        }
+        return uploadName;
+    }
 
 
 
+    @ApiOperation("商户资质申请")
+    @PostMapping("/my/merchants/save")
+    public void  saveMerchant(@RequestBody MerchantDetailVO merchantDetailVO){
+
+        Long merchantId = SecurityUtil.getMerchantId();
+        MerchantDTO merchantDTO = MerchantDetailConvert.INSTANCE.vo2dto(merchantDetailVO);
+        merchantDTO.setId(merchantId);
+        merchantService.applyMerchant(merchantDTO);
+    }
 
 
 

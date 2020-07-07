@@ -14,6 +14,7 @@
         <module>shanjupay-common</module>
         <module>shanjupay-merchant</module>
         <module>shanjupay-merchant-application</module>
+        <module>qiniu</module>
     </modules>
 
     <parent>
@@ -203,6 +204,20 @@
                 <version>3.8.0</version>
             </dependency>
 
+
+            <!-- 七牛云 -->
+            <dependency>
+                <groupId>com.qiniu</groupId>
+                <artifactId>qiniu-java-sdk</artifactId>
+                <version>[7.2.0, 7.2.99]</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>2.8.5</version>
+                <scope>compile</scope>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -236,6 +251,13 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
+                    <!--<annotationProcessorPaths>-->
+                        <!--<path>-->
+                            <!--<groupId>org.mapstruct</groupId>-->
+                            <!--<artifactId>mapstruct-processor</artifactId>-->
+                            <!--<version>${org.mapstruct.version}</version>-->
+                        <!--</path>-->
+                    <!--</annotationProcessorPaths>-->
                 </configuration>
             </plugin>
 
