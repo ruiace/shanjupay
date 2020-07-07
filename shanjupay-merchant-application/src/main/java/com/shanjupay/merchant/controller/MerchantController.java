@@ -1,16 +1,20 @@
 package com.shanjupay.merchant.controller;
 
+import com.shanjupay.common.valid.ValidUtils;
 import com.shanjupay.merchant.api.MerchantService;
 import com.shanjupay.merchant.api.dto.MerchantDTO;
+import com.shanjupay.merchant.service.SmsService;
+import com.shanjupay.merchant.vo.MerchantRegisterVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * @author Administrator
@@ -22,6 +26,9 @@ public class MerchantController {
 
     @Reference
     private MerchantService merchantService;
+
+    @Autowired
+    private SmsService smsService;
 
     @ApiOperation("测试")
     @GetMapping(path = "/hello")
@@ -43,4 +50,47 @@ public class MerchantController {
         MerchantDTO merchantDTO = merchantService.queryMerchantById(id);
         return merchantDTO;
     }
+
+
+    @ApiOperation("获取手机验证码")
+    @ApiImplicitParam(name = "phone",value = "手机号",required = true,dataType = "String",paramType = "query")
+    @GetMapping("/sms")
+    public String getSMSCode(@RequestParam("phone") String phone){
+        String result = smsService.sendMsg(phone);
+        return result;
+    }
+
+
+    @ApiOperation("注册商户")
+    @PostMapping("/merchants/register")
+    public MerchantRegisterVO registerMerchant(@RequestBody @Validated MerchantRegisterVO merchantRegister, BindingResult errorResult){
+        ValidUtils.validParams(errorResult);
+        smsService.checkVerifiyCode(merchantRegister.getVerifyKey(),merchantRegister.getVerifyCode());
+        MerchantDTO merchantDTO = new MerchantDTO();
+        merchantDTO.setUsername(merchantRegister.getUsername());
+        merchantDTO.setPassword(merchantRegister.getPassword());
+        merchantDTO.setMobile(merchantRegister.getMobile());
+        MerchantDTO merchant = merchantService.createMerchant(merchantDTO);
+        return merchantRegister;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

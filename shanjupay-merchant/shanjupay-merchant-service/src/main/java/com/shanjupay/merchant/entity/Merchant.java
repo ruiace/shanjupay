@@ -54,6 +54,10 @@ public class Merchant implements Serializable {
     @TableField("USERNAME")
     private String username;
 
+    @ApiModelProperty("密码")
+    @TableField("PASSWORD")
+    private String password;
+
     @ApiModelProperty(value = "联系人手机号(关联统一账号)")
     @TableField("MOBILE")
     private String mobile;
