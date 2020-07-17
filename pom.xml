@@ -21,6 +21,7 @@
         <module>qiniu</module>
         <module>test</module>
         <module>shanjupay-payment-agent</module>
+        <module>test-rocketmq</module>
     </modules>
 
     <parent>
