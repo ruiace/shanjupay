@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shanjupay.transaction.mapper.PlatformChannelMapper">
+
+    <!-- 根据平台服务类型查询支付渠道列表 -->
+    <select id="selectPayChannelByPlatformChannel" resultType="com.shanjupay.transaction.api.dto.PayChannelDTO">
+        select b.CHANNEL_CODE ,b.CHANNEL_NAME
+        from platform_pay_channel a
+        inner JOIN pay_channel b
+        on a.PAY_CHANNEL = b.CHANNEL_CODE
+         where a.PLATFORM_CHANNEL = #{platformChannelCode}
+    </select>
+</mapper>

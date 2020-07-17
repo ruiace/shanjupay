@@ -12,13 +12,22 @@
 
     <artifactId>shanjupay-merchant-api</artifactId>
 
-<dependencies>
-    <dependency>
-        <groupId>com.rp</groupId>
-        <artifactId>shanjupay-common</artifactId>
-        <version>1.0-SNAPSHOT</version>
-    </dependency>
-</dependencies>
+    <dependencies>
+        <dependency>
+            <groupId>com.rp</groupId>
+            <artifactId>shanjupay-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <!--     前端JS在Long长度大于17位时会出现精度丢失的问题，由于项目中门店ID的长度会超过17位，所以在此处添加注
+  解将返回给前端的门店ID自动转为string类型   -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.9.9</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>
@@ -39,7 +48,7 @@
                     <target>1.8</target>
                     <compilerArguments>
                         <!--  要注意 win是分号，linux/Mac OS是冒号 -->
-                        <bootclasspath>${java.home}/lib/rt.jar;${java.home}/lib/jce.jar</bootclasspath>
+                        <bootclasspath>${java.home}/lib/rt.jar:${java.home}/lib/jce.jar</bootclasspath>
                     </compilerArguments>
                 </configuration>
             </plugin>

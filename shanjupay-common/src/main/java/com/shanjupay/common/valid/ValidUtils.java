@@ -35,7 +35,7 @@ public class ValidUtils {
             if (list.size() > 0) {
                 ObjectError objectError = list.get(0);
                 log.error("参数问题：{}", objectError.getDefaultMessage());
-                throw new BusinessException(objectError.getDefaultMessage());
+                throw new BussinessException(objectError.getDefaultMessage());
             }
             */
         }
@@ -63,7 +63,7 @@ public class ValidUtils {
         }
 //        if (!StringUtils.isEmpty(validMessage)) {
 //            //抛出业务异常
-//            throw new BusinessException(validMessage);
+//            throw new BussinessException(validMessage);
 //        }
         if (!StringUtils.isEmpty(s.toString())) {
             //抛出业务异常
