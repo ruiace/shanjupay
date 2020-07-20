@@ -1,0 +1,30 @@
+package com.shanjupay.paymentagent.api;
+
+import com.shanjupay.common.domain.BussinessException;
+import com.shanjupay.paymentagent.api.conf.AliConfigParam;
+import com.shanjupay.paymentagent.api.dto.AlipayBean;
+import com.shanjupay.paymentagent.api.dto.PaymentResponseDTO;
+
+/**
+ * 与第三支付渠道进行交互
+ * Created by Administrator.
+ */
+public interface PayChannelAgentService {
+
+
+    /**
+     * 调用支付宝的下单接口
+     * @param aliConfigParam 支付渠道配置的参数（配置的支付宝的必要参数）
+     * @param alipayBean 业务参数（商户订单号，订单标题，订单描述,,）
+     * @return 统一返回PaymentResponseDTO
+     */
+    PaymentResponseDTO createPayOrderByAliWAP(AliConfigParam aliConfigParam, AlipayBean alipayBean) throws BussinessException;
+//
+//    /**
+//     * 查询支付宝订单状态
+//     * @param aliConfigParam 支付渠道参数
+//     * @param outTradeNo 闪聚平台的订单号
+//     * @return
+//     */
+//    PaymentResponseDTO queryPayOrderByAli(AliConfigParam aliConfigParam,String outTradeNo) throws BussinessException;
+}

@@ -9,6 +9,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 public class PaymentAgentBootstrap {
 
     public static void main(String[] args) {
+
         SpringApplication.run(PaymentAgentBootstrap.class, args);
     }
 
