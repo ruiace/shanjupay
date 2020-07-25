@@ -28,4 +28,6 @@ public class PayOrderDTO implements Serializable {
 	private String payChannel;//详细原始支付渠道编码
 	private String clientIp; //请求IP
 
+    private String tradeNo;//聚合支付订单编号
+
 }

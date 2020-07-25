@@ -42,6 +42,10 @@ spring:
             refresh: true
             data-id: spring-boot-freemarker.yaml # spring boot freemarker配置
             group: COMMON_GROUP # 通用配置组
+          -
+            refresh: true
+            data-id: spring-boot-start-rocketmq.yaml
+            group: COMMON_GROUP
 
 
 dubbo:
@@ -64,6 +68,8 @@ dubbo:
 
 logging:
   config: classpath:log4j2.xml
+
+
 
 
 

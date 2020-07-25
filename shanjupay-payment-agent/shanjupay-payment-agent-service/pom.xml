@@ -104,11 +104,7 @@
             <artifactId>commons-logging</artifactId>
             <version>1.2</version>
         </dependency>
-        <dependency>
-            <groupId>com.github.tedzhdz</groupId>
-            <artifactId>wxpay-sdk</artifactId>
-            <version>3.0.10</version>
-        </dependency>
+
 
 
         <dependency>
